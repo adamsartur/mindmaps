@@ -1,0 +1,13 @@
+.header {
+  color: blueviolet;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+}
+.icon {
+  font-size: 1rem;
+  color: #3a3a3a;
+  display: flex;
+  align-items: center;
+}

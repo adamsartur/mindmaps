@@ -1,0 +1,36 @@
+.CreateElement {
+  min-width: 15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  padding: 1rem;
+  border-radius: 0.2rem;
+
+  background-color: white;
+  color: black;
+}
+
+.menuContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.collapsibleArea {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  margin-top: 1rem;
+}
+
+.label {
+  text-align: center;
+}
+
+.input {
+  width: 100%;
+  line-height: 1.5rem;
+  padding-left: 0.5rem;
+}

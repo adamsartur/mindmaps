@@ -1,0 +1,24 @@
+.colorPicker {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.colorPickerContainer {
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+}
+.label {
+  color: black;
+}
+.colorSwatch {
+  border: none !important;
+  outline: none;
+  appearance: none;
+}
+.colorInput {
+  border: none !important;
+  outline: none;
+  appearance: none;
+}
