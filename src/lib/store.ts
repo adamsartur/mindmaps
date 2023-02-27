@@ -67,7 +67,7 @@ type RFState = {
 };
 
 api
-  .get("/.netlify/functions/mindmaps")
+  .get("/api/mindmaps")
   .then(({ data }) => {
     console.log(data);
     const getNodes = data.nodes;

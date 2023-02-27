@@ -32,8 +32,9 @@ function CreateElement({ setIsLoading }: CreateElementProps) {
       nodes,
       edges,
     };
+    console.log(mindmapData);
     api
-      .post("/.netlify/functions/mindmap", JSON.stringify(mindmapData)) // Send nodes and edges to API
+      .post("/api/mindmap", JSON.stringify(mindmapData)) // Send nodes and edges to API
       .then((response) => {
         setMindmapId(response.data.id);
         console.log("response.data.id", response.data.id);
