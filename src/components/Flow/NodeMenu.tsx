@@ -1,7 +1,10 @@
+import useStore from "lib/store";
 import { memo } from "react";
-import { Handle, Position, NodeToolbar, useNodeId } from "reactflow";
+import { Handle, Position, NodeToolbar, useNodeId, NodeProps } from "reactflow";
 
-const NodeMenu = ({ data }: any) => {
+const NodeMenu = ({ id, data }: NodeProps) => {
+  //const onNodeDelete = useStore((state) => state.nodeDelete());
+  const deleteNode = useStore((state) => state.deleteNode);
   const nodeId = useNodeId();
   function handleDelete() {
     console.log("Delete button clicked ", nodeId);
@@ -29,7 +32,7 @@ const NodeMenu = ({ data }: any) => {
         isVisible={data.toolbarVisible}
         position={data.toolbarPosition}
       >
-        <button onClick={handleDelete}>Delete</button>
+        <button onClick={() => deleteNode(id)}>Delete</button>
         <button onClick={handleEdit}>Edit</button>
         <button onClick={handleExpand}>Expand</button>
         <button onClick={handleCopy}>Copy</button>

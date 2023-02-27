@@ -1,16 +1,49 @@
 import { useState } from "react";
+import useStore from "lib/store";
+import { api } from "lib/axios";
 import styles from "./CreateElement.module.css";
 import SubmitButton from "./SubmitButton";
 import Header from "./Header";
 import { Colorpicker } from "./Colorpicker";
 
-function CreateElement() {
+interface ManageMindMapProps {
+  operation: "create" | "update" | "delete";
+  mindMapId: string;
+  name: string;
+  nodes?: any[];
+  edges?: any[];
+}
+
+interface CreateElementProps {
+  setIsLoading: Function;
+}
+
+function CreateElement({ setIsLoading }: CreateElementProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [color, setColor] = useState("#ffffff");
-  const [mapName, setMapName] = useState("MyMap");
+  const { nodes, edges, mindmapId, name, setMindmapId } = useStore(); // Retrieve nodes and edges from the store
 
   function handleOnSubmit(event: any) {
-    console.log("clicked");
+    event.preventDefault();
+    setIsLoading(true);
+    const mindmapData = {
+      mindMapId: mindmapId,
+      name: name,
+      nodes,
+      edges,
+    };
+    api
+      .post("/.netlify/functions/mindmap", JSON.stringify(mindmapData)) // Send nodes and edges to API
+      .then((response) => {
+        setMindmapId(response.data.id);
+        console.log("response.data.id", response.data.id);
+        console.log(mindmapId);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
   }
 
   function handleColorChange(event: any) {
@@ -35,7 +68,7 @@ function CreateElement() {
       <Header
         isCollapsed={isCollapsed}
         setIsCollapsed={setIsCollapsed}
-        mapName={mapName}
+        mapName={name}
       />
       {isCollapsed ? null : (
         <div className={styles.collapsibleArea}>

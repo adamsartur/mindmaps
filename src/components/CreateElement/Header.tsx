@@ -24,7 +24,7 @@ function Header({ setIsCollapsed, isCollapsed, mapName }: HeaderProps) {
       className={styles.header}
       onClick={isCollapsed ? expandHandler : collapseHandler}
     >
-      <div>{mapName} - Add Node</div>
+      <div>{mapName}</div>
       <span className={styles.icon}>
         {isCollapsed ? <FaPlus /> : <FaMinus />}
       </span>

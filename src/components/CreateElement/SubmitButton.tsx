@@ -8,7 +8,7 @@ interface SubmitButtonProps {
 function SubmitButton({ onClick }: SubmitButtonProps) {
   return (
     <button className={styles.button} onClick={onClick}>
-      Submit
+      Save Map
     </button>
   );
 }
