@@ -1,0 +1,107 @@
+datasource db {
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Post {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    title     String   @db.VarChar(255)
+    content   String?  @db.VarChar(2555)
+    published Boolean  @default(false)
+    // author    User     @relation(fields: [authorId], references: [id])
+    authorId  Int
+}
+
+model Player {
+    id          String        @id @default(uuid())
+    user        String
+    score       Int           @default(0)
+    roundScore  Int           @default(0)
+    isHand      Boolean       @default(false)
+    lastBet     Boolean       @default(false)
+    envidoScore Int           @default(0)
+    lastEnvido  Boolean       @default(false)
+    PlayerCards PlayerCards[]
+    CardsPlayed CardsPlayed[]
+
+    @@unique([id])
+}
+
+model PlayerCards {
+    id String @id @default(uuid())
+
+    player_id String
+    card_id   String
+
+    player Player @relation(fields: [player_id], references: [id])
+    cards  Cards  @relation(fields: [card_id], references: [id])
+
+    @@unique([id])
+    @@map("player_cards")
+}
+
+model CardsPlayed {
+    id String @id @default(uuid())
+
+    round  Int
+    envido Boolean @default(false)
+
+    game_id   String
+    card_id   String
+    player_id String
+
+    cards  Cards     @relation(fields: [card_id], references: [id])
+    game   GameState @relation(fields: [game_id], references: [id])
+    player Player    @relation(fields: [player_id], references: [id])
+
+    @@unique([id])
+    @@map("cards_played")
+}
+
+model GameState {
+    id          String        @id @default(uuid())
+    bet         Int
+    round       Int
+    CardsPlayed CardsPlayed[]
+}
+
+model Cards {
+    id          String        @id @default(uuid())
+    suit        String
+    number      Int
+    value       Int
+    available   Boolean       @default(true)
+    PlayerCards PlayerCards[]
+    CardsPlayed CardsPlayed[]
+
+    @@unique([id])
+}
+
+// model Profile {
+//   id     Int     @id @default(autoincrement())
+//   bio    String?
+//   user   User    @relation(fields: [userId], references: [id])
+//   userId Int     @unique
+// }
+
+// model User {
+//   id      Int      @id @default(autoincrement())
+//   email   String   @unique
+//   name    String?
+//   posts   Post[]
+//   profile Profile?
+// }
+
+model MindMaps {
+    id    String @id @default(uuid())
+    name  String
+    nodes Json
+    edges Json
+}
