@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import useStore from "lib/store";
 import { api } from "lib/axios";
 import styles from "./CreateElement.module.css";
@@ -6,22 +6,24 @@ import SubmitButton from "./SubmitButton";
 import Header from "./Header";
 import { Colorpicker } from "./Colorpicker";
 
-interface ManageMindMapProps {
-  operation: "create" | "update" | "delete";
-  mindMapId: string;
-  name: string;
-  nodes?: any[];
-  edges?: any[];
-}
-
 interface CreateElementProps {
   setIsLoading: Function;
 }
+const getNodeId = () => `randomnode_${+new Date()}`;
 
 function CreateElement({ setIsLoading }: CreateElementProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [inputNodeName, setInputNodeName] = useState("Added node");
   const [color, setColor] = useState("#ffffff");
-  const { nodes, edges, mindmapId, name, setMindmapId } = useStore(); // Retrieve nodes and edges from the store
+  const {
+    nodes,
+    edges,
+    mindmapId,
+    name,
+    setMindmapId,
+    setNodes,
+    onNodesChange,
+  } = useStore(); // Retrieve nodes and edges from the store
 
   function handleOnSubmit(event: any) {
     event.preventDefault();
@@ -63,7 +65,20 @@ function CreateElement({ setIsLoading }: CreateElementProps) {
     colorPicker.click();
   }
 
-  function handleInput() {}
+  const onAdd = useCallback(() => {
+    const newNode = {
+      id: getNodeId(),
+      data: { label: inputNodeName },
+      type: "menu",
+      position: {
+        x: Math.random() * window.innerWidth - 100,
+        y: Math.random() * window.innerHeight,
+      },
+    };
+    console.log(nodes);
+    setNodes([...nodes, newNode]);
+  }, [setNodes, nodes, inputNodeName]);
+
   return (
     <div className={styles.CreateElement}>
       <Header
@@ -80,7 +95,14 @@ function CreateElement({ setIsLoading }: CreateElementProps) {
               type="text"
               name="name"
               id="name"
+              value={inputNodeName}
+              onChange={(e) => {
+                setInputNodeName(e.target.value);
+              }}
             />
+          </div>
+          <div>
+            <button onClick={onAdd}>Create Node</button>
           </div>
           <div className={styles.menuContainer}>
             <Colorpicker

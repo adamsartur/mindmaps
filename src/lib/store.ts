@@ -64,6 +64,11 @@ type RFState = {
   deleteNode: (nodeId: string) => void;
   setMindmapId: (id: string) => void;
   setName: (name: string) => void;
+  setNodes: (nodes: Node[]) => void;
+  setEdges: (edges: Edge[]) => void;
+  addNode: (node: Node) => void;
+  addEdge: (edge: Edge) => void;
+  updateNode: (id: string, data: any) => void;
 };
 
 api
@@ -121,6 +126,33 @@ const useStore = create<RFState>((set, get) => ({
       mindmapId: id,
     });
   },
+  setNodes: (nodes: Node[]) => {
+    set({
+      nodes,
+    });
+  },
+  setEdges: (edges: Edge[]) => {
+    set({
+      edges,
+    });
+  },
+  addNode: (node: Node) =>
+    set((state) => ({
+      nodes: [...state.nodes, node],
+    })),
+  addEdge: (edge: Edge) =>
+    set((state) => ({
+      edges: [...state.edges, edge],
+    })),
+  updateNode: (id: string, data: any) =>
+    set((state) => {
+      const nodes = [...get().nodes];
+      const nodeIndex = nodes.findIndex((node) => node.id === id);
+      nodes[nodeIndex] = { ...nodes[nodeIndex], data };
+      console.log(id);
+      console.log("updatedNode!!");
+      return { nodes };
+    }),
 }));
 
 export default useStore;
