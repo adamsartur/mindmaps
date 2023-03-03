@@ -1,0 +1,26 @@
+.addSibling {
+  position: absolute;
+  bottom: 4px;
+  right: 100px;
+  background-color: white;
+  border-radius: 100%;
+  border: 1px solid #505050;
+  font-size: 8px;
+  color: #999;
+  cursor: pointer;
+  outline: none;
+  height: 12px;
+  width: 0px;
+  display: flex;
+}
+
+.addSibling svg {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+}
+
+.addSibling:hover {
+  color: #000;
+  filter: brightness(1.2);
+}

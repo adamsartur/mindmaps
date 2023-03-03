@@ -14,7 +14,7 @@ const getNodeId = () => `randomnode_${+new Date()}`;
 function CreateElement({ setIsLoading }: CreateElementProps) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [inputNodeName, setInputNodeName] = useState("Added node");
-  const [color, setColor] = useState("#ffffff");
+  const [color, setColor] = useState("#b1b1b7");
   const {
     nodes,
     edges,
@@ -68,7 +68,11 @@ function CreateElement({ setIsLoading }: CreateElementProps) {
   const onAdd = useCallback(() => {
     const newNode = {
       id: getNodeId(),
-      data: { label: inputNodeName },
+      data: {
+        label: inputNodeName,
+        noLeftHandle: true,
+        connectColor: color,
+      },
       type: "menu",
       position: {
         x: Math.random() * window.innerWidth - 100,

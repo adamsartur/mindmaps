@@ -100,8 +100,22 @@ model Cards {
 // }
 
 model MindMaps {
-    id    String @id @default(uuid())
-    name  String
-    nodes Json
-    edges Json
+    id     String @id @default(uuid())
+    name   String
+    nodes  Json
+    edges  Json
+    userId String
+
+    user User @relation(fields: [userId], references: [id])
+
+    @@unique([id])
+}
+
+model User {
+    id       String     @id @default(uuid())
+    name     String
+    email    String
+    mindMaps MindMaps[]
+
+    @@unique([id])
 }
