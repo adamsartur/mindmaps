@@ -12,11 +12,11 @@ const NodeMenu = ({ id, data, xPos, yPos, selected }: NodeProps) => {
   const addEdge = useStore((state) => state.addEdge);
   const addNode = useStore((state) => state.addNode);
   const updateNode = useStore((state) => state.updateNode);
+
   const [label, setLabel] = useState(data.label);
   const [isHovered, setIsHovered] = useState(false);
 
   const { noLeftHandle, connectColor } = data;
-
   const nodeId = useNodeId();
 
   function handleDelete() {
@@ -170,7 +170,7 @@ const NodeMenu = ({ id, data, xPos, yPos, selected }: NodeProps) => {
 
   return (
     <>
-      <NodeToolbar
+      {/* <NodeToolbar
         isVisible={data.toolbarVisible}
         position={data.toolbarPosition}
         className={styles.toolbar}
@@ -187,7 +187,7 @@ const NodeMenu = ({ id, data, xPos, yPos, selected }: NodeProps) => {
         <button className={styles.new} onClick={handleNewConnection}>
           New Connection
         </button>
-      </NodeToolbar>
+      </NodeToolbar> */}
       <div
         className={styles.node}
         style={{ padding: "10px 20px", cursor: "text" }}
