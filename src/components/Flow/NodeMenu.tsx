@@ -1,12 +1,21 @@
 import useStore from "lib/store";
-import { KeyboardEvent, memo, useEffect, useState } from "react";
-import { Handle, Position, NodeToolbar, useNodeId, NodeProps } from "reactflow";
+import { KeyboardEvent, memo, useState } from "react";
+import { Handle, Position, useNodeId, NodeProps } from "reactflow";
 import styles from "./NodeMenu.module.css";
 import DeleteButton from "../Buttons/DeleteButton";
 import AddButton from "../Buttons/AddButton";
 import AddSibling from "../Buttons/AddSibling";
 
-const NodeMenu = ({ id, data, xPos, yPos, selected }: NodeProps) => {
+const NodeMenu = ({
+  id,
+  data,
+  xPos,
+  yPos,
+  selected,
+}: NodeProps & {
+  noLeftHandle?: boolean;
+  connectColor?: string;
+}) => {
   //const onNodeDelete = useStore((state) => state.nodeDelete());
   const deleteNode = useStore((state) => state.deleteNode);
   const addEdge = useStore((state) => state.addEdge);
@@ -17,10 +26,8 @@ const NodeMenu = ({ id, data, xPos, yPos, selected }: NodeProps) => {
   const [isHovered, setIsHovered] = useState(false);
 
   const { noLeftHandle, connectColor } = data;
-  const nodeId = useNodeId();
 
   function handleDelete() {
-    console.log("Delete button clicked ", nodeId);
     deleteNode(id);
   }
   function handleAddSibling() {
@@ -43,9 +50,7 @@ const NodeMenu = ({ id, data, xPos, yPos, selected }: NodeProps) => {
       return;
     }
 
-    const targetNodeData = useStore
-      .getState()
-      .nodes.find((n) => n.id === parentNode.id)?.data;
+    const targetNodeData = nodes.find((n) => n.id === parentNode.id)?.data;
 
     let x = xPos || 0;
     let y = yPos + 30 || 0;
@@ -122,16 +127,16 @@ const NodeMenu = ({ id, data, xPos, yPos, selected }: NodeProps) => {
 
     const nodeWidth = 200;
     const nodeHeight = 50;
+    const nodes = useStore.getState().nodes;
 
-    const sourceNode = useStore.getState().nodes.find((n) => n.id === id);
+    const sourceNode = nodes.find((n) => n.id === id);
 
     let x = xPos + 300 || 0;
     let y = yPos - 50 || 0;
 
     // check for existing nodes in the same position
-    useStore
-      .getState()
-      .nodes.filter((n) => n.id !== id)
+    nodes
+      .filter((n) => n.id !== id)
       .forEach((n) => {
         if (
           n.position.x > x - nodeWidth &&
@@ -170,24 +175,6 @@ const NodeMenu = ({ id, data, xPos, yPos, selected }: NodeProps) => {
 
   return (
     <>
-      {/* <NodeToolbar
-        isVisible={data.toolbarVisible}
-        position={data.toolbarPosition}
-        className={styles.toolbar}
-      >
-        <button className={styles.edit} onClick={handleEdit}>
-          Edit
-        </button>
-        <button className={styles.expand} onClick={handleExpand}>
-          Expand
-        </button>
-        <button className={styles.copy} onClick={handleCopy}>
-          Copy
-        </button>
-        <button className={styles.new} onClick={handleNewConnection}>
-          New Connection
-        </button>
-      </NodeToolbar> */}
       <div
         className={styles.node}
         style={{ padding: "10px 20px", cursor: "text" }}

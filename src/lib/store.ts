@@ -48,6 +48,30 @@ const sampleEdges: Edge[] = [
   // { id: "e1-3", source: "1", target: "3" },
 ];
 
+interface MindmapData {
+  mindmapId: number;
+  name: string;
+  nodes: MindmapNode[];
+  edges: MindmapEdge[];
+}
+
+interface MindmapNode {
+  id: number;
+  label: string;
+  x: number;
+  y: number;
+  color?: string;
+  size?: number;
+}
+
+interface MindmapEdge {
+  id: number;
+  source: number;
+  target: number;
+  label?: string;
+  color?: string;
+}
+
 const initialNodes = sampleNodes;
 const initialEdges = sampleEdges;
 
@@ -69,22 +93,8 @@ type RFState = {
   addNode: (node: Node) => void;
   addEdge: (edge: Edge) => void;
   updateNode: (id: string, data: any) => void;
+  loadMap: () => void;
 };
-
-api
-  .get("/api/mindmaps")
-  .then(({ data }) => {
-    console.log(data);
-    const getNodes = data.nodes;
-    const getEdges = data.edges;
-    useStore.setState({
-      nodes: getNodes,
-      edges: getEdges,
-      mindmapId: data.id,
-      name: data.name,
-    });
-  })
-  .catch((error) => console.log(error));
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 const useStore = create<RFState>((set, get, some) => ({
@@ -144,6 +154,20 @@ const useStore = create<RFState>((set, get, some) => ({
     set((state) => ({
       edges: [...state.edges, edge],
     })),
+  loadMap: () => {
+    api.get("/api/mindmaps").then(({ data }) => {
+      console.log(data);
+      const getNodes = data.nodes;
+      const getEdges = data.edges;
+      set((state: any) => ({
+        ...state,
+        nodes: getNodes,
+        edges: getEdges,
+        mindmapId: data.id,
+        name: data.name,
+      }));
+    });
+  },
   updateNode: (id: string, data: any) =>
     set((state) => {
       const nodes = [...get().nodes];

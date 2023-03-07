@@ -51,6 +51,7 @@ function CreateElement({ setIsLoading }: CreateElementProps) {
 
   function handleColorChange(event: any) {
     setColor(event.target.value);
+    console.log("color changed");
     const colorPicker = document.getElementById("color-picker");
     if (colorPicker) {
       colorPicker.remove();

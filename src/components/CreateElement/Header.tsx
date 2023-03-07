@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styles from "./Header.module.css";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import useStore from "../../lib/store";
 
 interface HeaderProps {
   setIsCollapsed: Function;
@@ -9,6 +10,7 @@ interface HeaderProps {
 }
 
 function Header({ setIsCollapsed, isCollapsed, mapName }: HeaderProps) {
+  const { loadMap } = useStore();
   function expandHandler() {
     setIsCollapsed(false);
     console.log("expandHandler");
@@ -16,6 +18,7 @@ function Header({ setIsCollapsed, isCollapsed, mapName }: HeaderProps) {
 
   function collapseHandler() {
     setIsCollapsed(true);
+    loadMap();
     console.log("collapseHandler");
   }
 

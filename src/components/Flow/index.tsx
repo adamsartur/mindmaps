@@ -57,6 +57,7 @@ function Flow() {
         onConnect={onConnect}
         nodeTypes={nodeTypes}
         defaultEdgeOptions={defaultEdgeOptions}
+        connectionLineType={ConnectionLineType.SmoothStep}
         fitView
       >
         <Panel position="top-left">
