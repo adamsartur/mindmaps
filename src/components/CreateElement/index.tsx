@@ -82,7 +82,7 @@ function CreateElement({ setIsLoading }: CreateElementProps) {
     };
     console.log(nodes);
     setNodes([...nodes, newNode]);
-  }, [setNodes, nodes, inputNodeName]);
+  }, [setNodes, nodes, inputNodeName, color]);
 
   return (
     <div className={styles.CreateElement}>

@@ -93,6 +93,7 @@ type RFState = {
   addNode: (node: Node) => void;
   addEdge: (edge: Edge) => void;
   updateNode: (id: string, data: any) => void;
+  updateLabel: (id: string, label: string) => void;
   loadMap: () => void;
 };
 
@@ -168,6 +169,20 @@ const useStore = create<RFState>((set, get, some) => ({
       }));
     });
   },
+  sendQuery: () => {
+    api.get("/api/generate").then(({ data }) => {
+      console.log(data);
+      // const getNodes = data.nodes;
+      // const getEdges = data.edges;
+      // set((state: any) => ({
+      //   ...state,
+      //   nodes: getNodes,
+      //   edges: getEdges,
+      //   mindmapId: data.id,
+      //   name: data.name,
+      // }));
+    });
+  },
   updateNode: (id: string, data: any) =>
     set((state) => {
       const nodes = [...get().nodes];
@@ -177,6 +192,13 @@ const useStore = create<RFState>((set, get, some) => ({
       console.log("updatedNode!!");
       return { nodes };
     }),
+  updateLabel: (id: string, label: string) => {
+    set({
+      nodes: get().nodes.map((node) =>
+        node.id === id ? { ...node, label } : node
+      ),
+    });
+  },
 }));
 
 export default useStore;

@@ -36,8 +36,7 @@ const NodeMenu = ({
     const nodeWidth = 200;
     const nodeHeight = 50;
 
-    const nodes = useStore.getState().nodes;
-    const edges = useStore.getState().edges;
+    const { nodes, edges } = useStore.getState();
 
     const sourceNode = nodes.find((n) => n.id === id);
     const parentEdge = edges.find((e) => e.target === sourceNode?.id);

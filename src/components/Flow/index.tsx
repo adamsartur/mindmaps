@@ -15,6 +15,7 @@ import ReactFlow, {
   Background,
 } from "reactflow";
 import CustomNode from "./CustomNode";
+import CustomEdge from "./CustomEdge";
 import { shallow } from "zustand/shallow";
 import styles from "./Flow.module.css";
 import NodeMenu from "./NodeMenu";
@@ -23,6 +24,9 @@ import LoaderOverlay from "components/LoaderOverlay";
 const nodeTypes = {
   custom: CustomNode,
   menu: NodeMenu,
+};
+const edgeTypes = {
+  custom: CustomEdge,
 };
 
 const defaultEdgeOptions = {
@@ -56,6 +60,7 @@ function Flow() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         defaultEdgeOptions={defaultEdgeOptions}
         connectionLineType={ConnectionLineType.SmoothStep}
         fitView
