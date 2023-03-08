@@ -3,12 +3,13 @@ import styles from "./SubmitButton.module.css";
 
 interface SubmitButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>;
+  text: string;
 }
 
-function SubmitButton({ onClick }: SubmitButtonProps) {
+function SubmitButton({ onClick, text }: SubmitButtonProps) {
   return (
     <button className={styles.button} onClick={onClick}>
-      Save Map
+      {text}
     </button>
   );
 }

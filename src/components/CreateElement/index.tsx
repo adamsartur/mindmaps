@@ -5,7 +5,6 @@ import styles from "./CreateElement.module.css";
 import SubmitButton from "./SubmitButton";
 import Header from "./Header";
 import { Colorpicker } from "./Colorpicker";
-
 interface CreateElementProps {
   setIsLoading: Function;
 }
@@ -23,8 +22,12 @@ function CreateElement({ setIsLoading }: CreateElementProps) {
     setMindmapId,
     setNodes,
     onNodesChange,
+    generate,
   } = useStore(); // Retrieve nodes and edges from the store
 
+  function handleGenerate(event: any) {
+    generate(inputNodeName);
+  }
   function handleOnSubmit(event: any) {
     event.preventDefault();
     setIsLoading(true);
@@ -94,10 +97,9 @@ function CreateElement({ setIsLoading }: CreateElementProps) {
       {isCollapsed ? null : (
         <div className={styles.collapsibleArea}>
           <div className={styles.menuContainer}>
-            <input
+            <textarea
               placeholder="Node text"
               className={styles.input}
-              type="text"
               name="name"
               id="name"
               value={inputNodeName}
@@ -116,7 +118,8 @@ function CreateElement({ setIsLoading }: CreateElementProps) {
               handleColorClick={handleColorClick}
             />
           </div>
-          <SubmitButton onClick={handleOnSubmit} />
+          <SubmitButton onClick={handleGenerate} text={"Generate"} />
+          <SubmitButton onClick={handleOnSubmit} text={"Save Map"} />
         </div>
       )}
     </div>

@@ -95,6 +95,7 @@ type RFState = {
   updateNode: (id: string, data: any) => void;
   updateLabel: (id: string, label: string) => void;
   loadMap: () => void;
+  generate: (instructions: string) => void;
 };
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
@@ -169,18 +170,25 @@ const useStore = create<RFState>((set, get, some) => ({
       }));
     });
   },
-  sendQuery: () => {
-    api.get("/api/generate").then(({ data }) => {
+  generate: (instructions) => {
+    api.post("/api/generate", JSON.stringify(instructions)).then(({ data }) => {
       console.log(data);
-      // const getNodes = data.nodes;
-      // const getEdges = data.edges;
-      // set((state: any) => ({
-      //   ...state,
-      //   nodes: getNodes,
-      //   edges: getEdges,
-      //   mindmapId: data.id,
-      //   name: data.name,
-      // }));
+
+      const parsedData = JSON.parse(data);
+
+      console.log(parsedData);
+
+      const { nodes: pNodes, edges: pEdges } = parsedData;
+      console.log("nodes");
+      console.log(pNodes);
+      console.log("edges");
+      console.log(pEdges);
+      set({
+        nodes: pNodes,
+      });
+      set({
+        edges: pEdges,
+      });
     });
   },
   updateNode: (id: string, data: any) =>
