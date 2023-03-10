@@ -21,9 +21,7 @@ npm install
 <p>The app will be available at http://localhost:3000.</p>
 <h2>Usage 🖱️</h2>
 <p>To create a flow chart, you need to enter some text in the input box. The text should follow this format:</p>
-<pre><code class="language-text">
-generate a detailed flow chart (at least 8 nodes) that represents a scrum methodology cycle
-</code></pre>
+<pre><code class="language-text">generate a detailed flow chart (at least 8 nodes) that represents a scrum methodology cycle</code></pre>
 <p>You can edit the nodes and connections by clicking on them. You can also drag and drop them to rearrange them.</p>
 <p>@workingOnIt To save your project, you need to click on the Save button. You will get a unique ID for your project that you can use later to load it.</p>
 <p>@workingOnIt To load a project, you need to enter the ID in the Load box and click on the Load button.</p>
