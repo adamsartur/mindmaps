@@ -1,0 +1,195 @@
+.container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+.saveMenu {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.input {
+  height: 40px;
+  padding-left: 15px;
+  width: 180px;
+}
+
+.saveMenu input[type="text"] {
+  border: none;
+  background-color: #f2f2f2;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  width: 200px;
+  outline: none;
+}
+
+.saveMenu button {
+  border: none;
+  background-color: #3a3a3a;
+  color: #ffffff;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+  height: 100%;
+}
+
+.saveMenu button:hover {
+  background-color: oliveDrab;
+}
+
+.saveMenu button:disabled {
+  background-color: #8d8a8a;
+  cursor: initial;
+}
+.saveMenu button:disabled:hover {
+  background-color: #8d8a8a;
+}
+
+.saveMenu button svg {
+  font-size: 20px;
+}
+
+.saveMenu input.success {
+  color: oliveDrab;
+}
+
+.saveMenu input.validating {
+  box-shadow: 0 0 0 2px rgba(255, 255, 0, 0.6);
+}
+
+.saveMenu input.valid {
+  box-shadow: 0 0 0 2px rgba(0, 128, 0, 0.6);
+}
+
+.saveMenu input.invalid {
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.6);
+}
+
+.optionsList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  overflow-y: auto;
+  max-height: 200px;
+}
+.container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+}
+
+.saveMenu {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.saveMenu input[type="text"] {
+  border: none;
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-size: 16px;
+  width: 200px;
+  outline: none;
+}
+
+.saveMenu button {
+  border: none;
+  background-color: #3a3a3a;
+  color: #ffffff;
+  font-size: 16px;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.saveMenu button:hover {
+  background-color: oliveDrab;
+}
+
+.saveMenu button span {
+  margin-left: 5px;
+}
+
+.saveMenu button svg {
+  margin-right: 5px;
+  font-size: 20px;
+}
+
+.saveMenu input.success {
+  color: oliveDrab;
+}
+
+.saveMenu input.validating {
+  box-shadow: 0 0 0 2px rgba(255, 255, 0, 0.6);
+}
+
+.saveMenu input.valid {
+  box-shadow: 0 0 0 2px rgba(0, 128, 0, 0.6);
+}
+
+.saveMenu input.invalid {
+  box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.6);
+}
+
+.optionsList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  overflow-y: auto;
+  max-height: 200px;
+}
+.optionsList li {
+  padding: 10px;
+  cursor: pointer;
+}
+.optionsList li:hover {
+  background-color: #eee;
+}
+.optionsList li[aria-selected="true"] {
+  font-weight: bold;
+}
+.optionsList li {
+  padding: 10px 10px 10px 15px;
+  cursor: pointer;
+}
+.optionsList li:hover {
+  background-color: #eee;
+}
+.optionsList li[aria-selected="true"] {
+  font-weight: bold;
+}

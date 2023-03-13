@@ -11,6 +11,7 @@ import {
   OnConnect,
   applyNodeChanges,
   applyEdgeChanges,
+  Position,
 } from "reactflow";
 
 const sampleNodes: Node[] = [
@@ -82,6 +83,8 @@ type RFState = {
   edges: Edge[];
   mindmapId?: string;
   name: string;
+  isDirty: boolean;
+  loadingMap: boolean;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -94,8 +97,11 @@ type RFState = {
   addEdge: (edge: Edge) => void;
   updateNode: (id: string, data: any) => void;
   updateLabel: (id: string, label: string) => void;
-  loadMap: () => void;
+  loadMap: (id: string) => void;
+  //setPositions: () => void;
   generate: (instructions: string) => void;
+  addCompletion: (instructions: string) => void;
+  getParentParams: (id: string) => any;
 };
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
@@ -103,6 +109,8 @@ const useStore = create<RFState>((set, get, some) => ({
   nodes: initialNodes,
   edges: initialEdges,
   name: "",
+  isDirty: false,
+  loadingMap: false,
   onNodesChange: (changes: NodeChange[]) => {
     set({
       nodes: applyNodeChanges(changes, get().nodes),
@@ -156,9 +164,8 @@ const useStore = create<RFState>((set, get, some) => ({
     set((state) => ({
       edges: [...state.edges, edge],
     })),
-  loadMap: () => {
-    api.get("/api/mindmaps").then(({ data }) => {
-      console.log(data);
+  loadMap: (id: string) => {
+    api.post("/api/mindmaps", JSON.stringify(id)).then(({ data }) => {
       const getNodes = data.nodes;
       const getEdges = data.edges;
       set((state: any) => ({
@@ -167,22 +174,14 @@ const useStore = create<RFState>((set, get, some) => ({
         edges: getEdges,
         mindmapId: data.id,
         name: data.name,
+        loadingMap: true,
       }));
     });
   },
-  generate: (instructions) => {
+  generate: (instructions: string) => {
     api.post("/api/generate", JSON.stringify(instructions)).then(({ data }) => {
-      console.log(data);
-
       const parsedData = JSON.parse(data);
-
-      console.log(parsedData);
-
       const { nodes: pNodes, edges: pEdges } = parsedData;
-      console.log("nodes");
-      console.log(pNodes);
-      console.log("edges");
-      console.log(pEdges);
       set({
         nodes: pNodes,
       });
@@ -191,13 +190,24 @@ const useStore = create<RFState>((set, get, some) => ({
       });
     });
   },
+  addCompletion: (instructions: string) => {
+    api
+      .post("/api/addgenerate", JSON.stringify(instructions))
+      .then(({ data }) => {
+        const parsedData = JSON.parse(data);
+
+        const { nodes: pNodes, edges: pEdges } = parsedData;
+        set((state) => ({
+          nodes: [...state.nodes, ...pNodes],
+          edges: [...state.edges, ...pEdges],
+        }));
+      });
+  },
   updateNode: (id: string, data: any) =>
     set((state) => {
       const nodes = [...get().nodes];
       const nodeIndex = nodes.findIndex((node) => node.id === id);
       nodes[nodeIndex] = { ...nodes[nodeIndex], data };
-      console.log(id);
-      console.log("updatedNode!!");
       return { nodes };
     }),
   updateLabel: (id: string, label: string) => {
@@ -207,6 +217,135 @@ const useStore = create<RFState>((set, get, some) => ({
       ),
     });
   },
+  getParentParams: (id: string) => {
+    console.log("params");
+    console.log(id);
+    const edge = get().edges.find((edge) => edge.id === id);
+    console.log(edge);
+    if (!edge) {
+      return [];
+    }
+
+    const parentNodes: Node[] = [];
+
+    const findParentNodes = (id: string) => {
+      const edge = get().edges.find((edge) => edge.id === id);
+      console.log(edge);
+      console.log("edge");
+      if (edge) {
+        const parentNode = get().nodes.find((node) => node.id === edge.source);
+        if (parentNode) {
+          parentNodes.push(parentNode);
+          findParentNodes(parentNode.id);
+        }
+      }
+    };
+    console.log("findParentNodes");
+
+    findParentNodes(id);
+
+    console.log(parentNodes);
+
+    const params = parentNodes.map(
+      (node) => (
+        console.log(node),
+        {
+          id: node.id,
+          params: node.data.params,
+        }
+      )
+    );
+
+    return params;
+  },
 }));
 
 export default useStore;
+
+//to fix
+
+// setPositions: () => {
+//   console.log("set");
+//   const nodes = get().nodes;
+//   const edges = get().edges;
+
+//   const getChildren = (parentId: string, edges: Edge[]) =>
+//     edges
+//       .filter((edge) => edge.source === parentId)
+//       .map((edge) => edge.target);
+
+//   const X_STEP = 150;
+//   const Y_STEP = 100;
+
+//   const visited: { [nodeId: string]: boolean } = {};
+//   // mark all nodes as not visited
+//   Object.keys(nodes).forEach((id) => {
+//     visited[id] = false;
+//   });
+
+//   const nodePositions: { [nodeId: string]: { x: number; y: number } } = {};
+
+//   const traverseGraph = (
+//     nodeId: string,
+//     nodes: Node[],
+//     edges: Edge[]
+//   ): { id: string; position: { x: number; y: number } }[] => {
+//     // mark node as visited
+//     visited[nodeId] = true;
+
+//     // calculate new position based on parent position and number of children
+//     const node = nodes.find((n) => n.id === nodeId);
+//     if (!node) {
+//       return [];
+//     }
+//     const childIds = edges
+//       .filter((e) => e.source === nodeId)
+//       .map((e) => e.target);
+//     const numChildren = childIds.length;
+//     let newPos: { x: number; y: number };
+//     let parentPos = node.position;
+//     if (numChildren === 0) {
+//       newPos = parentPos;
+//     } else if (numChildren === 1) {
+//       newPos = { x: parentPos.x + X_STEP, y: parentPos.y };
+//     } else {
+//       const firstChildId = childIds[0];
+//       const lastChildId = childIds[numChildren - 1];
+//       const firstChildPos = visited[firstChildId]
+//         ? nodePositions[firstChildId]
+//         : traverseGraph(firstChildId, nodes, edges);
+//       const lastChildPos = visited[lastChildId]
+//         ? nodePositions[lastChildId]
+//         : traverseGraph(lastChildId, nodes, edges);
+//       newPos = {
+//         x: (firstChildPos.x + lastChildPos.x) / 2,
+//         y: parentPos.y + Y_STEP,
+//       };
+//     }
+
+//     // update node position and save to positions object
+//     nodePositions[nodeId] = newPos;
+//     nodes = nodes.map((n) =>
+//       n.id === nodeId ? { ...n, position: newPos } : n
+//     );
+
+//     // return array of id and position objects for all nodes
+//     const results = [{ id: nodeId, position: { x: newPos.x, y: newPos.y } }];
+//     for (const childId of childIds) {
+//       results.push(...traverseGraph(childId, nodes, edges));
+//     }
+//     return results;
+//   };
+
+//   // traverse the graph starting from each unvisited node
+//   Object.keys(nodes).forEach((id) => {
+//     if (!visited[id]) {
+//       traverseGraph(id, nodes, edges);
+//     }
+//   });
+
+//   // update state with new node positions
+//   set({
+//     nodes: nodes,
+//   });
+// },

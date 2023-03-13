@@ -3,10 +3,12 @@ const prisma = new PrismaClient();
 
 export default async function handler(req: any, res: any) {
   let response;
-  console.log(req);
+  const requestBody = JSON.parse(Object.keys(req.body)[0]);
+  console.log(requestBody);
+  let id = requestBody ? requestBody : "5d9af3d4-fdef-4285-af18-61404215ce98";
   response = await prisma.mindMaps.findFirst({
     where: {
-      userId: "ef7b6a28-ecec-40f9-8b16-d1d021c15ddb",
+      id,
     },
   });
   res.status(200).json(response);

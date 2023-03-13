@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 export default async function handler(req: any, res: any) {
   const requestBody = JSON.parse(Object.keys(req.body)[0]);
 
-  const { name, nodes, edges, mindMapId, userId } = requestBody;
+  const { name, nodes, edges, mindmapId, userId } = requestBody;
 
   let result;
   const mindMapData: any = {
@@ -22,15 +22,38 @@ export default async function handler(req: any, res: any) {
     mindMapData.userId = "ef7b6a28-ecec-40f9-8b16-d1d021c15ddb";
   }
 
-  result = await prisma.mindMaps.create({
-    data: mindMapData,
-  });
+  //function that updates prisma mindmaps data based on data from response, where userID and mindmapid are the same values
+  //if mindmapid is not present, create a new mindmap
+  //if mindmapid is present, update the mindmap with the new data
+  //if mindmapid is present, but the user id is different, create a new mindmap
 
-  await prisma.mindMaps.delete({
+  result = await prisma.mindMaps.upsert({
     where: {
-      id: mindMapId,
+      id: mindmapId,
+    },
+    create: {
+      name: name,
+      nodes: nodes,
+      edges: edges,
+      userId: mindMapData.userId,
+    },
+    update: {
+      name: name,
+      nodes: nodes,
+      edges: edges,
+      userId: mindMapData.userId,
     },
   });
+
+  // result = await prisma.mindMaps.create({
+  //   data: mindMapData,
+  // });
+
+  // await prisma.mindMaps.delete({
+  //   where: {
+  //     id: mindMapId,
+  //   },
+  // });
 
   res.status(200).json(result);
 }

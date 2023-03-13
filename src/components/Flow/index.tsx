@@ -1,36 +1,34 @@
 import CreateElement from "components/CreateElement";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useMediaQuery } from "@mui/material";
-import useStore from "../../lib/store";
+import useStore from "lib/store";
 import ReactFlow, {
-  Node,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-  Connection,
-  Edge,
   ConnectionLineType,
   Panel,
   MiniMap,
   Background,
 } from "reactflow";
 import CustomNode from "./CustomNode";
-import CustomEdge from "./CustomEdge";
 import { shallow } from "zustand/shallow";
 import styles from "./Flow.module.css";
-import NodeMenu from "./NodeMenu";
+import NodeMenu from "../Nodes/NodeMenu";
 import LoaderOverlay from "components/LoaderOverlay";
+import SaveMenu from "components/SaveMenu";
+import AIMenu from "components/AIMenu";
+import Condition from "components/Edges/Condition";
 
 const nodeTypes = {
   custom: CustomNode,
   menu: NodeMenu,
 };
 const edgeTypes = {
-  custom: CustomEdge,
+  custom: Condition,
 };
 
 const defaultEdgeOptions = {
-  animated: true,
+  // labelStyle: { fill: "#fff", fontWeight: 700 },
+  // animated: true,
+  // type: "smoothstep",
   //type: "belzier",
 };
 
@@ -49,7 +47,6 @@ function Flow() {
     selector,
     shallow
   );
-
   return (
     <div className={styles.flow}>
       {isLoading && <LoaderOverlay />}
@@ -65,11 +62,15 @@ function Flow() {
         connectionLineType={ConnectionLineType.SmoothStep}
         fitView
       >
-        <Panel position="top-left">
+        <Panel position="bottom-left">
           <CreateElement setIsLoading={setIsLoading} />
+        </Panel>
+        <Panel position="top-left">
+          <AIMenu setIsLoading={setIsLoading} />
         </Panel>
         <Background />
         {!isSmallScreen && <MiniMap />}
+        <SaveMenu setIsLoading={setIsLoading} />
       </ReactFlow>
     </div>
   );

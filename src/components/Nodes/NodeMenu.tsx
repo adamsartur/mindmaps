@@ -167,7 +167,9 @@ const NodeMenu = ({
     const newEdge = {
       id: `${sourceNode!.id}-${targetNodeId}`,
       source: sourceNode!.id,
+      type: "custom",
       target: targetNodeId,
+      data: { label: "New Edge" },
     };
     addEdge(newEdge);
   }
@@ -188,12 +190,22 @@ const NodeMenu = ({
           value={label}
           onChange={handleLabelChange}
           autoFocus
-          style={{ width: "100%" }}
           className={styles.node_input}
           onKeyDown={(event) =>
             handleKeyDown(event, handleNewConnection, handleAddSibling)
           }
         />
+
+        {data.params && data.params.length > 0 && (
+          <div className={styles.nodeParams}>
+            {data.params.map((param: any, index: any) => (
+              <div key={index} className={styles.node_param}>
+                <span>{param.key}</span>
+                <span>{param.value}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       {!noLeftHandle && <Handle type="target" position={Position.Left} />}
       <Handle type="source" position={Position.Right} />

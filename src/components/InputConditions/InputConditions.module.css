@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-row {
+  display: flex;
+  margin-bottom: 8px;
+  flex-direction: column;
+}
+
+.input-field {
+  flex: 1;
+  margin-top: 1rem;
+}
+
+.remove-button {
+  margin-left: 4px;
+  background: none;
+  border: none;
+  color: #b34d4d;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.remove-button:hover {
+  filter: brightness(1.1);
+  transition: all 0.4s ease-in-out;
+}
+
+.add-button {
+  background: #3a3a3a;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 8px;
+  color: white;
+  border-radius: 5px;
+  padding: 0.4rem 0 0.3rem 0;
+}
+.add-button:hover {
+  filter: brightness(1.1);
+  background: olivedrab;
+}
+
+.idSpan {
+  width: 100%;
+  margin-top: 1rem;
+}
