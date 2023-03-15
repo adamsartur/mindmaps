@@ -30,7 +30,7 @@ a {
   }
 }
 
-.valid {
+.valid > div {
   background-color: #fff;
 }
 
@@ -53,14 +53,14 @@ a {
 }
 
 /* Apply the animation to the element */
-.valid {
+.valid > div {
   animation-name: fillGreen;
   animation-duration: 2s; /* Set the duration to 2 seconds */
   animation-timing-function: linear; /* Use a linear timing function for a smooth transition */
   animation-fill-mode: forwards; /* Keep the green background after the animation finishes */
 }
 
-.invalid {
+.invalid > div {
   background-color: #fff;
 }
 
@@ -83,7 +83,7 @@ a {
 }
 
 /* Apply the animation to the element */
-.invalid {
+.invalid > div {
   animation-name: fillRed;
   animation-duration: 2s; /* Set the duration to 2 seconds */
   animation-timing-function: linear; /* Use a linear timing function for a smooth transition */
