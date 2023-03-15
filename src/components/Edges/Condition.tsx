@@ -4,6 +4,8 @@ import { getBezierPath } from "reactflow";
 import styles from "./Condition.module.css";
 import Modal from "react-modal";
 import InputConditions from "components/InputConditions";
+import SubmitButton from "components/Buttons/SubmitButton";
+import useStore from "lib/store";
 
 const foreignObjectSize = 40;
 
@@ -26,9 +28,11 @@ export default function Condition({
     targetY,
     targetPosition,
   });
+  const setEdgeParams = useStore((state) => state.setEdgeParams);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEdge, setCurrentEdge] = useState(null);
+  const [inputs, setInputs] = useState([]);
 
   const openModal = (edgeId: any) => {
     setCurrentEdge(edgeId);
@@ -46,6 +50,12 @@ export default function Condition({
 
   const handleInputsChange = (newInputs: any) => {
     console.log("newInputs", newInputs);
+    setInputs(newInputs);
+  };
+
+  const handleInputsSave = (newInputs: any) => {
+    console.log(inputs);
+    setEdgeParams(id, inputs);
   };
 
   return (
@@ -79,10 +89,15 @@ export default function Condition({
         isOpen={isModalOpen}
         onRequestClose={closeModal}
       >
-        <div>
-          Edge ID: {currentEdge}
+        <div className={styles.modalHeader}>
+          Set your conditions
           <InputConditions id={id} onInputsChange={handleInputsChange} />
         </div>
+        <SubmitButton
+          full={true}
+          text="Save Condition"
+          onClick={handleInputsSave}
+        />
       </Modal>
     </>
   );

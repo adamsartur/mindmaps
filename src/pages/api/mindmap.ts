@@ -26,24 +26,35 @@ export default async function handler(req: any, res: any) {
   //if mindmapid is not present, create a new mindmap
   //if mindmapid is present, update the mindmap with the new data
   //if mindmapid is present, but the user id is different, create a new mindmap
-
-  result = await prisma.mindMaps.upsert({
-    where: {
-      id: mindmapId,
-    },
-    create: {
-      name: name,
-      nodes: nodes,
-      edges: edges,
-      userId: mindMapData.userId,
-    },
-    update: {
-      name: name,
-      nodes: nodes,
-      edges: edges,
-      userId: mindMapData.userId,
-    },
-  });
+  if (!mindmapId) {
+    // check if mindmapId is null or empty string
+    result = await prisma.mindMaps.create({
+      data: {
+        name: name,
+        nodes: nodes,
+        edges: edges,
+        userId: mindMapData.userId,
+      },
+    });
+  } else {
+    result = await prisma.mindMaps.upsert({
+      where: {
+        id: mindmapId,
+      },
+      create: {
+        name: name,
+        nodes: nodes,
+        edges: edges,
+        userId: mindMapData.userId,
+      },
+      update: {
+        name: name,
+        nodes: nodes,
+        edges: edges,
+        userId: mindMapData.userId,
+      },
+    });
+  }
 
   // result = await prisma.mindMaps.create({
   //   data: mindMapData,

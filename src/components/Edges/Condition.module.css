@@ -32,6 +32,10 @@
   outline: none;
   padding: 20px;
   top: calc(50vh - 150px);
-  left: calc(50vw - 250px);
-  width: 500px;
+  left: calc(50vw - 300px);
+  width: 600px;
+}
+
+.modalHeader {
+  text-align: center;
 }

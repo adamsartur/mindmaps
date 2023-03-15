@@ -20,6 +20,7 @@ const SaveMenu = ({ setIsLoading }: SaveMenuProps) => {
   const [id, setId] = useState("");
   const [inputId, setInputId] = useState("");
   const [userMaps, setUserMaps] = useState<Mindmap[]>([]);
+  const [mapName, setMapName] = useState("");
 
   // const userMaps = [
   //   { label: "Scrum", id: "5d9af3d4-fdef-4285-af18-61404215ce98" },
@@ -63,9 +64,10 @@ const SaveMenu = ({ setIsLoading }: SaveMenuProps) => {
   function handleSave() {
     setIsLoading(true);
 
+    let nameParam = mapName ? mapName : name;
     const mindmapData = {
       mindmapId: mindmapId,
-      name: name,
+      name: nameParam,
       nodes,
       edges,
     };
@@ -117,6 +119,9 @@ const SaveMenu = ({ setIsLoading }: SaveMenuProps) => {
         <button onClick={handleSave}>
           <FaSave />
         </button>
+        <div>
+          <input type="text" onChange={(e) => setMapName(e.target.value)} />
+        </div>
       </div>
     </div>
   );

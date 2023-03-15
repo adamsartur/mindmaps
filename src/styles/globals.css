@@ -29,3 +29,63 @@ a {
     background: rgb(37, 37, 37);
   }
 }
+
+.valid {
+  background-color: #fff;
+}
+
+/* Define the animation */
+@keyframes fillGreen {
+  0% {
+    background-color: #fff; /* Start with white background */
+    background-position: 0 0; /* Start with the background image at position (0, 0) */
+  }
+  95% {
+    background-color: #75b575; /* End with green background */
+    background-position: 100% 0; /* End with the background image at position (100%, 0) */
+    filter: brightness(1.1);
+  }
+  100% {
+    filter: brightness(1);
+    background-color: #75b575; /* End with green background */
+    background-position: 100% 0; /* End with the background image at position (100%, 0) */
+  }
+}
+
+/* Apply the animation to the element */
+.valid {
+  animation-name: fillGreen;
+  animation-duration: 2s; /* Set the duration to 2 seconds */
+  animation-timing-function: linear; /* Use a linear timing function for a smooth transition */
+  animation-fill-mode: forwards; /* Keep the green background after the animation finishes */
+}
+
+.invalid {
+  background-color: #fff;
+}
+
+/* Define the animation */
+@keyframes fillRed {
+  0% {
+    background-color: #fff; /* Start with white background */
+    background-position: 0 0; /* Start with the background image at position (0, 0) */
+  }
+  95% {
+    background-color: #ab7777; /* End with green background */
+    background-position: 100% 0; /* End with the background image at position (100%, 0) */
+    filter: brightness(1.1);
+  }
+  100% {
+    filter: brightness(1);
+    background-color: #ab7777; /* End with green background */
+    background-position: 100% 0; /* End with the background image at position (100%, 0) */
+  }
+}
+
+/* Apply the animation to the element */
+.invalid {
+  animation-name: fillRed;
+  animation-duration: 2s; /* Set the duration to 2 seconds */
+  animation-timing-function: linear; /* Use a linear timing function for a smooth transition */
+  animation-fill-mode: forwards; /* Keep the green background after the animation finishes */
+}

@@ -102,7 +102,80 @@ type RFState = {
   generate: (instructions: string) => void;
   addCompletion: (instructions: string) => void;
   getParentParams: (id: string) => any;
+  setNodeParams: (id: string) => void;
+  setEdge: (edge: any) => void;
+  setEdgeParams: (id: string, newParams: any) => void;
 };
+
+interface ParamObjProps {
+  key: string;
+  value: string;
+  operation?: string;
+}
+
+function compareParams(
+  ruleParams: ParamObjProps[],
+  testParams: ParamObjProps[]
+) {
+  if (
+    !ruleParams ||
+    !testParams ||
+    ruleParams.length === 0 ||
+    testParams.length === 0
+  ) {
+    return true; // no validation needed
+  }
+  const ruleParamsArray = Array.isArray(ruleParams) ? ruleParams : [ruleParams];
+  const ruleMap = new Map(
+    ruleParamsArray.map(({ key, value }) => [key, value])
+  );
+  const testParamsArray = Array.isArray(testParams) ? testParams : [testParams];
+  for (const { key, value, operation = "equals" } of testParamsArray) {
+    if (!ruleMap.has(key)) {
+      continue; // skip if key not present in ruleParams
+    }
+    console.log("match! lets test");
+
+    const ruleValue = ruleMap.get(key);
+
+    switch (operation) {
+      case "equals":
+        console.log("equals");
+        if (value !== ruleValue) {
+          return false;
+        }
+        break;
+      case "not-equals":
+        console.log("not");
+        if (value === ruleValue) {
+          return false;
+        }
+        break;
+      case "greater-than":
+        console.log("greater");
+        if (Number(value) <= Number(ruleValue)) {
+          return false;
+        }
+        break;
+      case "less-than":
+        console.log("less");
+        if (Number(value) >= Number(ruleValue)) {
+          return false;
+        }
+        break;
+      case "includes":
+        console.log("includes");
+        if (!ruleValue!.includes(value)) {
+          return false;
+        }
+        break;
+      default:
+        throw new Error(`Invalid operation: ${operation}`);
+    }
+  }
+  console.log("true");
+  return true;
+}
 
 // this is our useStore hook that we can use in our components to get parts of the store and call actions
 const useStore = create<RFState>((set, get, some) => ({
@@ -156,6 +229,16 @@ const useStore = create<RFState>((set, get, some) => ({
       edges,
     });
   },
+  setEdge: (edge: any) => {
+    const updatedEdges = get().edges.map((e) => {
+      if (e.id === edge.id) {
+        return edge;
+      } else {
+        return e;
+      }
+    });
+    set({ edges: updatedEdges });
+  },
   addNode: (node: Node) =>
     set((state) => ({
       nodes: [...state.nodes, node],
@@ -206,7 +289,7 @@ const useStore = create<RFState>((set, get, some) => ({
   updateNode: (id: string, data: any) =>
     set((state) => {
       const nodes = [...get().nodes];
-      const nodeIndex = nodes.findIndex((node) => node.id === id);
+      const nodeIndex = nodes.findIndex((node: any) => node.id === id);
       nodes[nodeIndex] = { ...nodes[nodeIndex], data };
       return { nodes };
     }),
@@ -215,6 +298,79 @@ const useStore = create<RFState>((set, get, some) => ({
       nodes: get().nodes.map((node) =>
         node.id === id ? { ...node, label } : node
       ),
+    });
+  },
+  setEdgeParams: (id: string, newParams: any) => {
+    set({
+      edges: get().edges.map((edge) => {
+        if (edge.id === id) {
+          return {
+            ...edge,
+            data: {
+              ...edge.data,
+              params: newParams,
+            },
+          };
+        }
+        return edge;
+      }),
+    });
+  },
+  setNodeParams: (nodeId: string) => {
+    console.log(nodeId);
+    //get current node
+    const node = get().nodes.find((n) => n.id === nodeId);
+    if (!node) return;
+    //get edges from current node
+    const edges = get().edges.filter((e) => e.source === nodeId);
+    console.log(edges);
+    // determine all the nodes connected to the given node
+    const connectedNodes = edges.map((e) => e.target);
+
+    // determine all the node ids connected to the given node
+    const edgeIds = edges.map((e) => e.id);
+    console.log(edgeIds);
+
+    // set state with node params value
+    //set({ nodeParams: node.data.params });
+
+    // loop all nodes
+    get().nodes.forEach((n) => {
+      console.log(n);
+      //for connected nodes
+      if (connectedNodes.includes(n.id)) {
+        //compare params
+        const edge = get().edges.find((e) => e.target === n.id);
+        const edgeParams = edge!.data.params;
+        const nodeParams = node.data.params;
+        const isActive = compareParams(edgeParams, nodeParams);
+        const isActiveClass = isActive ? "valid" : "invalid";
+
+        set((state) => ({
+          nodes: state.nodes.map((node) => {
+            if (node.id === n.id) {
+              return {
+                ...node,
+                className: isActiveClass,
+              };
+            }
+            return node;
+          }),
+        }));
+      } else {
+        //for not connected nodes
+        set((state) => ({
+          nodes: state.nodes.map((node) => {
+            if (node.id === n.id) {
+              return {
+                ...node,
+              };
+            }
+            return node;
+          }),
+        }));
+      }
+      console.log(get().nodes);
     });
   },
   getParentParams: (id: string) => {

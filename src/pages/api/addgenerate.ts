@@ -13,7 +13,7 @@ const node = {
 };
 const edge = {
   id: "edge-id",
-  type: "custom",
+  //type: "custom",
   source: "node1",
   target: "node2",
   label: "Edge Label",
@@ -30,7 +30,7 @@ export default async function handler(req: any, res: any) {
   let response = await openai.createCompletion({
     //model: "code-davinci-002",
     model: "text-davinci-003",
-    max_tokens: 600,
+    max_tokens: 1500,
     temperature: 0,
     prompt,
   });

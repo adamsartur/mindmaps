@@ -13,7 +13,7 @@ const node = {
 };
 const edge = {
   id: "edge-id",
-  type: "custom",
+  // type: "custom",
   source: "node1",
   target: "node2",
   label: "Edge Label",

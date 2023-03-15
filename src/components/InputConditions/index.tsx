@@ -1,11 +1,19 @@
 import useStore from "lib/store";
-import React, { useEffect, useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import React, { useEffect, useMemo, useState } from "react";
+import {
+  FaEquals,
+  FaGreaterThan,
+  FaLessThan,
+  FaNotEqual,
+  FaPlus,
+  FaSearch,
+} from "react-icons/fa";
 import styles from "./InputConditions.module.css";
 
 interface Input {
   key: string;
   value: string;
+  operation?: string;
 }
 interface InputConditionsProps {
   onInputsChange: Function;
@@ -13,16 +21,28 @@ interface InputConditionsProps {
 }
 
 function InputConditions({ onInputsChange, id }: InputConditionsProps) {
-  const [inputs, setInputs] = useState<Input[]>([{ key: "", value: "" }]);
+  const [inputs, setInputs] = useState<Input[]>([
+    { key: "", value: "", operation: "" },
+  ]);
   const [parentParams] = useStore((store) => store.getParentParams(id));
 
-  useEffect(() => {
-    console.log(parentParams);
+  const options = useMemo(() => {
     if (parentParams && parentParams.params) {
-      //setInputs(parentParams.params.map((param: any) => ({ key: param.key })));
+      return parentParams.params.map((param: any) => (
+        <option key={param.key} value={param.key}>
+          {param.key}
+        </option>
+      ));
     }
-    console.log("setInputs");
-  }, []);
+    return null;
+  }, [parentParams]);
+  // useEffect(() => {
+  //   console.log(parentParams);
+  //   if (parentParams && parentParams.params) {
+  //     //setInputs(parentParams.params.map((param: any) => ({ key: param.key })));
+  //   }
+  //   console.log("setInputs");
+  // }, []);
 
   function handleChange(
     index: number,
@@ -57,14 +77,27 @@ function InputConditions({ onInputsChange, id }: InputConditionsProps) {
             onChange={(event: any) => handleChange(index, event)}
             className={styles["input-field"]}
           >
-            {parentParams &&
-              parentParams.params.map((param: any) => (
-                <option key={param.key} value={param.key}>
-                  {param.key}
-                </option>
-              ))}
+            {options}
           </select>
-          <span className={styles.idSpan}>condition</span>
+          <span className={styles.idSpan}>
+            <select name="operation" id="operation">
+              <option title="equals" value="equals">
+                ✅
+              </option>
+              <option value="not-equals" title="not-equals">
+                ❌
+              </option>
+              <option value="greater-than" title="greater-than">
+                🔼
+              </option>
+              <option value="less-than" title="less-than">
+                🔽
+              </option>
+              <option value="includes" title="includes">
+                🔍
+              </option>
+            </select>
+          </span>
           <input
             type="text"
             name="value"

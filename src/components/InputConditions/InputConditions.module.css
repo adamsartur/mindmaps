@@ -6,12 +6,13 @@
 .input-row {
   display: flex;
   margin-bottom: 8px;
-  flex-direction: column;
+  flex-direction: row;
 }
 
 .input-field {
   flex: 1;
   margin-top: 1rem;
+  padding: 0.6rem 0.4rem;
 }
 
 .remove-button {
@@ -43,7 +44,11 @@
   background: olivedrab;
 }
 
-.idSpan {
-  width: 100%;
+.idSpan select {
   margin-top: 1rem;
+  padding: 0.6rem 0.4rem;
+}
+
+.idSpan select option {
+  margin-top: 10px;
 }

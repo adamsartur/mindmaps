@@ -5,6 +5,7 @@ import styles from "./NodeMenu.module.css";
 import DeleteButton from "../Buttons/DeleteButton";
 import AddButton from "../Buttons/AddButton";
 import AddSibling from "../Buttons/AddSibling";
+import PlayButton from "../Buttons/PlayButton";
 
 const NodeMenu = ({
   id,
@@ -21,6 +22,7 @@ const NodeMenu = ({
   const addEdge = useStore((state) => state.addEdge);
   const addNode = useStore((state) => state.addNode);
   const updateNode = useStore((state) => state.updateNode);
+  const setNodeParams = useStore((state) => state.setNodeParams);
 
   const [label, setLabel] = useState(data.label);
   const [isHovered, setIsHovered] = useState(false);
@@ -121,6 +123,11 @@ const NodeMenu = ({
     updateNode(id, { ...data, label: event.target.value });
   }
 
+  function handlePlay() {
+    console.log("Play button clicked");
+    setNodeParams(id);
+  }
+
   function handleNewConnection() {
     console.log("New Connection button clicked");
 
@@ -185,6 +192,7 @@ const NodeMenu = ({
         {selected && <DeleteButton onClick={handleDelete} />}
         {selected && <AddButton onClick={handleNewConnection} />}
         {selected && <AddSibling onClick={handleAddSibling} />}
+        {selected && <PlayButton onClick={handlePlay} />}
         <input
           type="text"
           value={label}

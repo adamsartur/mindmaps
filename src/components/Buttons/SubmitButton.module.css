@@ -6,7 +6,21 @@
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
-
 .button:hover {
+  background-color: olivedrab;
+}
+
+.fullButton {
+  width: 100%;
+  background-color: #3a3a3a;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.fullButton:hover {
   background-color: olivedrab;
 }
