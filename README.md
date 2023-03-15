@@ -5,7 +5,9 @@
 <li>Generate flow charts from text</li>
 <li>Use project data as templates</li>
 <li>Manage nodes and connections</li>
-<li>Add variables to the flows and test them with CSS animations (coming soon)</li>
+<li>Add variables to the flows and test them</li>
+<li>Save/Load maps</li>
+<li>Import/export maps</li>
 <li>Create diagrams and mind maps (coming soon)</li>
 </ul>
 <h2>Installation 🛠️</h2>
@@ -27,4 +29,3 @@ npm install
 <p>@workingOnIt To load a project, you need to enter the ID in the Load box and click on the Load button.</p>
 <h2>Contribution 🙌</h2>
 <p>If you want to contribute to this project, you are very welcome. You can fork this repository and make a pull request with your changes or suggestions. You can also open an issue if you find any bugs or have any ideas for improvement.</p>
-<p>Please follow these contribution guidelines:</p>
