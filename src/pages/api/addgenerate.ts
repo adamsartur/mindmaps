@@ -23,7 +23,7 @@ const edgeText = JSON.stringify(edge);
 
 export default async function handler(req: any, res: any) {
   const requestBody = JSON.parse(Object.keys(req.body)[0]);
-  let prePrompt = `we are in a react-flow app, designed for workflows please only respond with a JSON: {nodes:[{}],edges:[{}]}; structure for node and edge:${nodeText} ${edgeText}`;
+  let prePrompt = `we are in a react-flow app, designed for workflows please only respond with a JSON: {nodes:[{}],edges:[{}]}; structure for node and edge:${nodeText} ${edgeText}.label the edges only if they add relevant info.`;
   let text = requestBody;
   let prompt = prePrompt + text;
   console.log(prompt);

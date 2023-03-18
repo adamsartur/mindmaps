@@ -6,6 +6,7 @@ import DeleteButton from "../Buttons/DeleteButton";
 import AddButton from "../Buttons/AddButton";
 import AddSibling from "../Buttons/AddSibling";
 import PlayButton from "../Buttons/PlayButton";
+import ReverseButton from "components/Buttons/ReverseButton";
 
 const NodeMenu = ({
   id,
@@ -15,6 +16,7 @@ const NodeMenu = ({
   selected,
 }: NodeProps & {
   noLeftHandle?: boolean;
+  handleReverse?: boolean;
   connectColor?: string;
 }) => {
   //const onNodeDelete = useStore((state) => state.nodeDelete());
@@ -23,11 +25,12 @@ const NodeMenu = ({
   const addNode = useStore((state) => state.addNode);
   const updateNode = useStore((state) => state.updateNode);
   const setNodeParams = useStore((state) => state.setNodeParams);
+  const setHandleReverse = useStore((state) => state.setHandleReverse);
 
   const [label, setLabel] = useState(data.label);
   const [isHovered, setIsHovered] = useState(false);
 
-  const { noLeftHandle, connectColor } = data;
+  const { noLeftHandle, handleReverse, connectColor } = data;
 
   function handleDelete() {
     deleteNode(id);
@@ -123,6 +126,12 @@ const NodeMenu = ({
     updateNode(id, { ...data, label: event.target.value });
   }
 
+  function handleReverseHandle() {
+    console.log("olar");
+    console.log(id);
+    setHandleReverse(id);
+  }
+
   function handlePlay() {
     console.log("Play button clicked");
     setNodeParams(id);
@@ -193,6 +202,7 @@ const NodeMenu = ({
         {selected && <AddButton onClick={handleNewConnection} />}
         {selected && <AddSibling onClick={handleAddSibling} />}
         {selected && <PlayButton onClick={handlePlay} />}
+        {selected && <ReverseButton onClick={handleReverseHandle} />}
         <input
           type="text"
           value={label}
@@ -215,8 +225,16 @@ const NodeMenu = ({
           </div>
         )}
       </div>
-      {!noLeftHandle && <Handle type="target" position={Position.Left} />}
-      <Handle type="source" position={Position.Right} />
+      {!noLeftHandle && (
+        <Handle
+          type="target"
+          position={handleReverse ? Position.Left : Position.Right}
+        />
+      )}
+      <Handle
+        type="source"
+        position={handleReverse ? Position.Right : Position.Left}
+      />
     </>
   );
 };

@@ -105,6 +105,8 @@ type RFState = {
   setNodeParams: (id: string) => void;
   setEdge: (edge: any) => void;
   setEdgeParams: (id: string, newParams: any) => void;
+  setHandleReverse: (id: string) => void;
+  toggleHandleReverse: (id: string) => void;
 };
 
 interface ParamObjProps {
@@ -239,7 +241,7 @@ const useStore = create<RFState>((set, get, some) => ({
     });
     set({ edges: updatedEdges });
   },
-  addNode: (node: Node) =>
+  addNode: (node: any) =>
     set((state) => ({
       nodes: [...state.nodes, node],
     })),
@@ -313,6 +315,42 @@ const useStore = create<RFState>((set, get, some) => ({
           };
         }
         return edge;
+      }),
+    });
+  },
+  setHandleReverse: (nodeId: string) => {
+    console.log(nodeId);
+    set({
+      nodes: get().nodes.map((node) => {
+        if (node.id === nodeId) {
+          console.log(node);
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              handleReverse: true,
+            },
+          };
+        }
+        return node;
+      }),
+    });
+  },
+  toggleHandleReverse: (nodeId: string) => {
+    console.log(nodeId);
+    set({
+      nodes: get().nodes.map((node) => {
+        if (node.id === nodeId) {
+          console.log(node);
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              handleReverse: !node.data.handleReverse,
+            },
+          };
+        }
+        return node;
       }),
     });
   },
